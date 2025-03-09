@@ -1,0 +1,99 @@
+<div class="d-flex flex-start mb-4">
+
+    <div class="card w-100">
+        <div class="card-body p-4">
+            <div class="d-flex flex-row justify-content-between">
+                <div class="user-info d-flex">
+                    <img class="rounded-circle shadow-1-strong me-3" src="{{this.userAvatar}}" alt="{{this.userName}}"
+                        width="65" height="65" />
+                    <div class="div">
+                        <h5 class="fw-bold">{{this.userName}}</h5>
+                        <p class="fst-italic ">Ngày bình luận: {{this.day}}/{{this.month}}/{{this.year}}</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center h3 me-4">
+                    <a class="link-muted me-2">
+                        <i 
+                          class="fa me-1" 
+                          [ngClass]="Review.hasVoted.length === 0 
+                            ? 'fa-thumbs-o-up' 
+                            : Review.hasVoted[0].type 
+                              ? 'fa-thumbs-up' 
+                              : 'fa-thumbs-o-up'"
+                            (click)="upVote()">
+                        </i>
+                        {{ Review.upVotes }}
+                      </a>
+                      <a class="link-muted" >
+                        <i 
+                          class="fa me-1 text-danger" 
+                          [ngClass]="Review.hasVoted.length === 0 
+                            ? 'fa-thumbs-o-down' 
+                            : Review.hasVoted[0].type 
+                              ? 'fa-thumbs-o-down' 
+                              : 'fa-thumbs-down'"
+                            (click)="downVote()">
+                        </i>
+                        {{ Review.downVotes }}
+                      </a> 
+                    <a *ngIf="userid == Review.userId || isAdmin" class="link-muted me-2 text-danger" (click)="deleteReview()"><i class="fa fa-trash ms-3"></i></a>
+                </div>
+            </div>
+            <div class="ps-1 border-top pt-2">
+                <h4 class="fw-bold"> {{this.Review.title}}</h4>
+                <p class="fst-normal">
+                    {{Review.content}}
+                </p>
+
+                @if (Review.reviewCriteria.length > 0) {
+                <mdb-accordion [borderless]="true" [flush]="true">
+                    <mdb-accordion-item>
+                        <ng-template mdbAccordionItemHeader>Tổng quan đánh giá</ng-template>
+                        <ng-template mdbAccordionItemBody>
+                            <div class="location">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Vị trí</span>
+                                    <app-rating-star [readonly]="true"
+                                        [rating]="Review.reviewCriteria[0].location"></app-rating-star>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Giá cả</span>
+                                    <app-rating-star [readonly]="true"
+                                        [rating]="Review.reviewCriteria[0].price"></app-rating-star>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Chất Lượng</span>
+                                    <app-rating-star [readonly]="true"
+                                        [rating]="Review.reviewCriteria[0].quality"></app-rating-star>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Dịch Vụ </span>
+                                    <app-rating-star [readonly]="true"
+                                        [rating]="Review.reviewCriteria[0].service"></app-rating-star>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Không gian</span>
+                                    <app-rating-star [readonly]="true"
+                                        [rating]="Review.reviewCriteria[0].space"></app-rating-star>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </mdb-accordion-item>
+                </mdb-accordion>
+                }
+
+                @if (Review.reviewImage.length > 0) {
+                <div class="d-flex flex-wrap">
+                    @for(img of Review.reviewImage;track $index) {
+                    <img class="img-fluid img-thumbnail" [src]="img.imgPath">
+                    }
+                </div>
+                }
+
+                <div class="d-flex justify-content-between align-items-center mt-2">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
